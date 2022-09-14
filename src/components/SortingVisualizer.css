@@ -1,0 +1,10 @@
+.arr-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around;
+}
