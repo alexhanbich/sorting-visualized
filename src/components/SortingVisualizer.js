@@ -1,23 +1,44 @@
 import React, { useState, useEffect } from "react";
 import './SortingVisualizer.css'
+import { bubbleSort } from "../algorithms/BubbleSort";
+
 const ARR_LEN = 100;
-export default function SortingVisualizer(props) {
+const DELAY = 5
+
+export default function SortingVisualizer() {
   const [arr, setArr] = useState([]);
   useEffect(() => {
     generateArr();
   }, []);
 
   function generateArr() {
-    const arr = [];
+    let arr = [];
     for (let i = 0; i < ARR_LEN; i++) {
       arr.push(i + 1)
     }
     // randomize
     for (let i = ARR_LEN - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+        let j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     setArr(arr)
+  }
+
+  function bubbleSort() {
+    let swapOrder = bubbleSort(arr)
+  }
+
+  function highlightArrElem(i) {
+    
+  }
+
+  function animate(swapOrder) {
+    swapOrder.forEach((i, j, isSwapped) => {
+        setTimeout(() => {
+            highlightArrElem(i)
+            highlightArrElem(j)
+        })
+    }, DELAY);
   }
 
   return (
