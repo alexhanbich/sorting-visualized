@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import './SortingVisualizer.css'
-import { bubbleSort } from "../algorithms/BubbleSort";
+import bubbleSortSwapOrder from "../algorithms/BubbleSortSwapOrder";
 
-const ARR_LEN = 100;
-const DELAY = 5
+const ARR_LEN = 10;
+const DELAY = 100
 
 export default function SortingVisualizer() {
   const [arr, setArr] = useState([]);
@@ -25,7 +25,9 @@ export default function SortingVisualizer() {
   }
 
   function bubbleSort() {
-    let swapOrder = bubbleSort(arr)
+    const newArr = [...arr]
+    let swapOrder = bubbleSortSwapOrder(newArr)
+    animate(swapOrder)
   }
 
   function highlightArrElem(i) {
@@ -33,12 +35,21 @@ export default function SortingVisualizer() {
   }
 
   function animate(swapOrder) {
-    swapOrder.forEach((i, j, isSwapped) => {
-        setTimeout(() => {
-            highlightArrElem(i)
-            highlightArrElem(j)
-        })
-    }, DELAY);
+    let prevArr = [...arr]
+    for (let k = 0; k < swapOrder.length; k++) {
+      let [i, j, isSwapped] = swapOrder[k]
+      setTimeout(() => {
+        highlightArrElem(i)
+        highlightArrElem(j)
+        if (isSwapped) {
+          [prevArr[i], prevArr[j]] = [prevArr[j], prevArr[i]];
+        }
+        console.log(prevArr)
+        setArr(prevArr)
+        
+        console.log('hi')
+      }, DELAY*(k+1));
+    }
   }
 
   return (
@@ -57,7 +68,7 @@ export default function SortingVisualizer() {
         </div>
         <div className="button-container">
             <button onClick={generateArr}>Shuffle</button>
-            <button>Sort 1</button>
+            <button onClick={bubbleSort}>Sort 1</button>
             <button>Sort 2</button>
             <button>Sort 3</button>
         </div>

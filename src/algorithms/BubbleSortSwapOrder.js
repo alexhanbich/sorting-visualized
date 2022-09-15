@@ -1,4 +1,4 @@
-export default function bubbleSort(arr) {
+export default function bubbleSortSwapOrder(arr) {
   const swapOrder = []
   for (let i = 0; i < arr.length; i++) {
     for (let j = 0; j < (arr.length-i-1); j++) {
