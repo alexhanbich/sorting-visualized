@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import './SortingVisualizer.css'
 import bubbleSortSwapOrder from "../algorithms/BubbleSortSwapOrder";
 
-const ARR_LEN = 10;
-const DELAY = 100
-
+const ARR_LEN = 50;
+const DELAY = 5;
 export default function SortingVisualizer() {
   const [arr, setArr] = useState([]);
+  const refContainer = useRef(null);
   useEffect(() => {
     generateArr();
   }, []);
 
   function generateArr() {
-    let arr = [];
+    const arr = [];
     for (let i = 0; i < ARR_LEN; i++) {
       arr.push(i + 1)
     }
@@ -25,42 +25,45 @@ export default function SortingVisualizer() {
   }
 
   function bubbleSort() {
-    const newArr = [...arr]
-    let swapOrder = bubbleSortSwapOrder(newArr)
+    const swapOrder = bubbleSortSwapOrder([...arr])
     animate(swapOrder)
   }
 
-  function highlightArrElem(i) {
-    
+  function highlightArrAccess(i) {
+    refContainer.current.children[i].style.backgroundColor = 'red';
+    setTimeout(() => {
+      refContainer.current.children[i].style.backgroundColor = '';
+    }, DELAY);
   }
 
   function animate(swapOrder) {
-    let prevArr = [...arr]
     for (let k = 0; k < swapOrder.length; k++) {
       let [i, j, isSwapped] = swapOrder[k]
       setTimeout(() => {
-        highlightArrElem(i)
-        highlightArrElem(j)
-        if (isSwapped) {
-          [prevArr[i], prevArr[j]] = [prevArr[j], prevArr[i]];
-        }
-        console.log(prevArr)
-        setArr(prevArr)
-        
-        console.log('hi')
-      }, DELAY*(k+1));
+        highlightArrAccess(i)
+        highlightArrAccess(j)
+        setTimeout(() => {
+          setArr(() => {
+            if (isSwapped) {
+              [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return [...arr]
+          })
+        }, DELAY)   
+      }, (DELAY*2)*k+1);
     }
+      
   }
 
   return (
     <div>
-        <div className="arr-container">
+        <div className="arr-container" ref={refContainer}>
             {arr.map((val, index) => (
-            <div
+            <div 
+                className="arr-bar"
                 style={{
-                height: `${val/ARR_LEN*90}vmin`,
-                width: `${80/ARR_LEN}vw`,
-                backgroundColor: 'black'
+                  height: `${val/ARR_LEN*90}vmin`,
+                  width: `${80/ARR_LEN}vw`
                 }}
                 key={index}
             ></div>

@@ -1,7 +1,11 @@
 .arr-container {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-around;
+}
+
+.arr-bar {
+    background-color: black;
 }
 
 .button-container {
